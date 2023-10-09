@@ -4,6 +4,7 @@ const app = getApp()
 
 Page({
   data: {
+    status:"蓝牙搜索中...\n可偿试刷新页面\n和重启ESP32",
     'deviceId':'',
     'serviceId':'',
     'characteristicId':''
@@ -18,10 +19,14 @@ Page({
       res.devices.forEach((device) => {
         // 这里可以做一些过滤
         console.log('Device Found', device)
-        if(device.deviceId == "2E209DD5-18CD-C223-8403-A2A0C1AD89CA"){
+        //var esp32uuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+        if(device.name == "ESP32"){
           // 找到设备开始连接
           this.bleConnection(device.deviceId);
-          wx.stopBluetoothDevicesDiscovery()
+          wx.stopBluetoothDevicesDiscovery();
+          this.setData({
+            status:"设备已联接"
+          })
         }
       })
       // 找到要搜索的设备后，及时停止扫描
